@@ -4,33 +4,45 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Lean audit · __TITLE__</title>
-<meta name="color-scheme" content="dark">
+<meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+  /* Palette and type match coinupbtc.xyz / coinupbtc.com (assets/lab.css): light first, dark by preference. */
   :root {
-    --ink: #0c0e13; --ink-2: #12151c; --ink-3: #1a1e27; --paper: #ece8df; --acid: #c8f54a;
-    --mute: #8b9287; --line: color-mix(in srgb, var(--paper) 14%, transparent);
-    --c-system: #6f7a8c; --c-tools: #4f86a8; --c-wip: #c8f54a; --c-asst: #e0a458; --c-user: #b48ead; --c-gap: #2a2f39;
-    --display: Fraunces, Georgia, serif; --mono: "IBM Plex Mono", ui-monospace, monospace;
+    --ink: #f5f7f6; --ink-2: #ffffff; --ink-3: #eef2f0; --paper: #14191a; --mute: #56625f;
+    --line: #d5dcda; --acid: #0b6b52; --acid-soft: #e2efea; --hot: #a6411a; --cool: #1f5f8b;
+    --c-system: #8a96a0; --c-tools: var(--cool); --c-wip: var(--acid); --c-asst: #c98a3c; --c-user: #8a6a9a; --c-gap: #cfd6d4;
+    --display: Fraunces, Georgia, serif; --sans: "IBM Plex Sans", "Segoe UI", Arial, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
     --pad: clamp(1rem, 4vw, 3rem);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #0e1312; --ink-2: #141b19; --ink-3: #1a2320; --paper: #e6ebe9; --mute: #9aa8a3;
+      --line: #27322f; --acid: #5ccaa0; --acid-soft: #15261f; --hot: #f08c62; --cool: #6cb4e4;
+      --c-system: #6f7d86; --c-asst: #e0a458; --c-user: #b48ead; --c-gap: #2a3431;
+      color-scheme: dark;
+    }
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--ink); color: var(--paper); font: .92rem/1.65 var(--mono); overflow-x: hidden; }
+  body { background: var(--ink); color: var(--paper); font: .95rem/1.65 var(--sans); overflow-x: hidden; }
+  .kicker, .stat span, .card .lean, .legend, .row, table, .note, footer { font-family: var(--mono); }
   .wrap { width: min(980px, 100%); margin-inline: auto; padding: 0 var(--pad) 3rem; }
   header { padding: 2.2rem 0 1.4rem; border-bottom: 1px solid var(--line); }
   .kicker { font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; color: var(--mute); }
-  h1 { font: 700 clamp(1.9rem, 6vw, 3.2rem)/1.02 var(--display); letter-spacing: -.03em; margin: .6rem 0 .5rem; }
+  h1 { font: 600 clamp(1.9rem, 6vw, 3.2rem)/1.05 var(--display); letter-spacing: -.03em; margin: .6rem 0 .5rem; }
   h1 em { font-style: normal; color: var(--acid); }
   h2 { font: 500 1.3rem/1.2 var(--display); margin: 2.6rem 0 .3rem; }
   .sub { color: var(--mute); font-size: .8rem; margin-bottom: 1rem; max-width: 70ch; }
   .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); margin-top: 1.4rem; }
   .stat { background: var(--ink); padding: .9rem 1rem; }
-  .stat b { display: block; font: 500 1.55rem/1.1 var(--display); color: var(--paper); font-variant-numeric: tabular-nums; }
+  .stat b { display: block; font: 600 1.55rem/1.1 var(--display); color: var(--paper); font-variant-numeric: tabular-nums; }
   .stat span { font-size: .7rem; color: var(--mute); letter-spacing: .06em; }
   .stat.hot b { color: var(--acid); }
-  .bar { display: flex; height: 44px; width: 100%; border-radius: 3px; overflow: hidden; margin: 1rem 0 .7rem; background: var(--c-gap); }
+  .bar { display: flex; height: 44px; width: 100%; border-radius: 3px; overflow: hidden; margin: 1rem 0 .7rem; background: var(--c-gap); gap: 1px; }
   .bar div { height: 100%; min-width: 2px; transition: opacity .15s; }
   .bar div:hover { opacity: .8; }
   .legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: .35rem 1.2rem; font-size: .8rem; }
@@ -39,8 +51,8 @@
   .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1rem; margin-top: 1rem; }
   .card { background: var(--ink-2); border: 1px solid var(--line); border-radius: 4px; padding: 1rem 1.1rem 1.1rem; }
   .card .lean { font-size: .68rem; letter-spacing: .16em; text-transform: uppercase; color: var(--mute); }
-  .card .num { font: 500 1.9rem/1.1 var(--display); margin: .35rem 0 .15rem; font-variant-numeric: tabular-nums; }
-  .card.big { border-color: color-mix(in srgb, var(--acid) 55%, transparent); }
+  .card .num { font: 600 1.9rem/1.1 var(--display); margin: .35rem 0 .15rem; font-variant-numeric: tabular-nums; }
+  .card.big { border-color: var(--acid); background: var(--acid-soft); }
   .card.big .num { color: var(--acid); }
   .card .what { font-size: .82rem; }
   .card .note { font-size: .74rem; color: var(--mute); margin-top: .5rem; }
@@ -48,7 +60,7 @@
   .row { display: grid; grid-template-columns: 9.5rem 1fr 6rem; align-items: center; gap: .8rem; font-size: .8rem; padding: .22rem 0; }
   .row .track { background: var(--ink-3); height: 14px; border-radius: 2px; overflow: hidden; }
   .row .fill { height: 100%; background: var(--acid); }
-  .row .fill.cool { background: var(--c-tools); }
+  .row .fill.cool { background: var(--cool); }
   .row .n { text-align: right; color: var(--mute); font-variant-numeric: tabular-nums; }
   .scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   table { border-collapse: collapse; width: 100%; min-width: 560px; margin-top: 1rem; font-size: .8rem; font-variant-numeric: tabular-nums; }
