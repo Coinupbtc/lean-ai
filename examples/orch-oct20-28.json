@@ -1,0 +1,484 @@
+{
+ "tool": "leanaudit 0.1.0",
+ "generated": "2026-10-28T23:28:28-05:00",
+ "label": "orch, Oct 20\u201328",
+ "window": {
+  "since": "2026-10-20",
+  "until": "2026-10-28T23:20"
+ },
+ "tokenizer": "exact",
+ "profiles": {
+  "orchestrator": 212
+ },
+ "totals": {
+  "sessions": 212,
+  "api_calls": 10369,
+  "tool_calls": 13133,
+  "prompt": 1359379771,
+  "uncached": 139820347,
+  "cached": 1219559424,
+  "output": 8114276,
+  "reasoning": 4377718,
+  "aux_prompt": 34966941
+ },
+ "headline": {
+  "read_per_write": 172,
+  "value_ratio_pct": 0.58,
+  "prompt_per_call": 131100,
+  "system_prompt_tokens_median": 12424,
+  "tool_schema_tokens": 8567,
+  "tool_count": 19
+ },
+ "wastes": [
+  {
+   "key": "overprocessing",
+   "lean": "Overprocessing",
+   "what": "Fixed prefix re-sent on every model call (system prompt + tool schemas)",
+   "tokens": 209269536,
+   "share_of_prompt": 15.4,
+   "note": "System prompt measured per session from its exact text; tool schemas measured today and applied to every call in the window."
+  },
+  {
+   "key": "wip",
+   "lean": "Inventory (WIP)",
+   "what": "Tool output carried in context and re-read by every later call in the session",
+   "tokens": 690973667,
+   "share_of_prompt": 50.8,
+   "note": "Each tool-output token was re-read 54.1\u00d7 on average. Reasoning text is not counted."
+  },
+  {
+   "key": "waiting",
+   "lean": "Waiting",
+   "what": "Prompt tokens the engine had to compute (cache miss) on engines that report cache",
+   "tokens": 139152852,
+   "share_of_prompt": 10.2,
+   "note": "0.0% of prompt tokens ran in sessions with zero reported cache reads (engine doesn't report hits); left out, not called waste."
+  },
+  {
+   "key": "inspection",
+   "lean": "Inspection",
+   "what": "Scheduled runs that checked and found nothing to say ([SILENT]) + after-session reviews",
+   "tokens": 49865454,
+   "share_of_prompt": 3.6,
+   "note": "Necessary non-value-added: the Lean move is cheaper inspection, not no inspection."
+  },
+  {
+   "key": "defects",
+   "lean": "Defects",
+   "what": "Tool calls the tool itself reported as failed, and runs that died with no output",
+   "tokens": 0,
+   "count": 125,
+   "rate": 1.0,
+   "share_of_prompt": 0.0,
+   "note": "223 non-zero shell exits are excluded (grep exits 1 on no match)."
+  },
+  {
+   "key": "motion",
+   "lean": "Motion",
+   "what": "Tool calls identical (same tool, same arguments) to an earlier call in the same session",
+   "count": 133,
+   "rate": 1.0,
+   "note": "Some repeats are legitimate (re-running a test after a fix); this is the ceiling, not the floor."
+  },
+  {
+   "key": "inventory",
+   "lean": "Inventory (idle stock)",
+   "what": "Tool schemas shipped on every call but never called in the window",
+   "tokens": 5091179,
+   "count": 2,
+   "share_of_prompt": 0.4,
+   "note": "See the inventory table: tokens shipped per actual use, per tool."
+  }
+ ],
+ "outcome_split": {
+  "delivered_or_chat": 1344034821,
+  "silent_inspection": 15344950,
+  "dead_runs": 0,
+  "aux": 34966941,
+  "cron_runs": 87,
+  "silent_runs": 9,
+  "dead_sessions": 0
+ },
+ "prefix_split": {
+  "system": 120438313,
+  "tools": 88831223,
+  "conversation": 1150110235
+ },
+ "wip": {
+  "history_reread": 975150458,
+  "tool_output": 690973667,
+  "assistant": 242804331,
+  "user": 41372460,
+  "tool_output_written": 12764491,
+  "tool_output_reread_x": 54.1,
+  "top_carried_tools": [
+   {
+    "tool": "terminal",
+    "tokens": 266016849,
+    "share": 38.5
+   },
+   {
+    "tool": "read_file",
+    "tokens": 240683220,
+    "share": 34.8
+   },
+   {
+    "tool": "patch",
+    "tokens": 77028176,
+    "share": 11.1
+   },
+   {
+    "tool": "execute_code",
+    "tokens": 75658976,
+    "share": 10.9
+   },
+   {
+    "tool": "vision_analyze",
+    "tokens": 13003232,
+    "share": 1.9
+   },
+   {
+    "tool": "skill_view",
+    "tokens": 4359253,
+    "share": 0.6
+   },
+   {
+    "tool": "write_file",
+    "tokens": 3070802,
+    "share": 0.4
+   },
+   {
+    "tool": "search_files",
+    "tokens": 2810710,
+    "share": 0.4
+   }
+  ],
+  "self_check": {
+   "modeled_prompt": 1184419994,
+   "measured_prompt": 1359379771,
+   "modeled_over_measured": 0.871
+  }
+ },
+ "cache": {
+  "reporting_models": [
+   "deepseek-v4.1-flash"
+  ],
+  "miss_pct_reporting": 10.2,
+  "unreported_prompt": 667495
+ },
+ "aux": {
+  "background_review": {
+   "calls": 198,
+   "prompt": 34520504,
+   "output": 300723
+  },
+  "vision": {
+   "calls": 527,
+   "prompt": 387271,
+   "output": 266884
+  },
+  "title_generation": {
+   "calls": 102,
+   "prompt": 47187,
+   "output": 1556
+  },
+  "approval": {
+   "calls": 24,
+   "prompt": 11979,
+   "output": 96
+  }
+ },
+ "by_source": {
+  "oneshot": {
+   "sessions": 100,
+   "prompt": 966330857,
+   "output": 5639477,
+   "api_calls": 6490
+  },
+  "telegram": {
+   "sessions": 13,
+   "prompt": 178774585,
+   "output": 871498,
+   "api_calls": 1208
+  },
+  "cron": {
+   "sessions": 87,
+   "prompt": 145534526,
+   "output": 1038980,
+   "api_calls": 2002
+  },
+  "subagent": {
+   "sessions": 12,
+   "prompt": 68739803,
+   "output": 564321,
+   "api_calls": 669
+  }
+ },
+ "tool_results": {
+  "total": 13133,
+  "failed": 125,
+  "failed_pct": 1.0,
+  "nonzero_exit": 223,
+  "top_failed": [
+   {
+    "tool": "write_file",
+    "failed": 34,
+    "of": 587,
+    "pct": 5.8
+   },
+   {
+    "tool": "execute_code",
+    "failed": 23,
+    "of": 956,
+    "pct": 2.4
+   },
+   {
+    "tool": "patch",
+    "failed": 21,
+    "of": 2885,
+    "pct": 0.7
+   },
+   {
+    "tool": "terminal",
+    "failed": 17,
+    "of": 6309,
+    "pct": 0.3
+   },
+   {
+    "tool": "vision_analyze",
+    "failed": 15,
+    "of": 542,
+    "pct": 2.8
+   },
+   {
+    "tool": "tool_call",
+    "failed": 4,
+    "of": 4,
+    "pct": 100.0
+   },
+   {
+    "tool": "read_file",
+    "failed": 4,
+    "of": 1479,
+    "pct": 0.3
+   },
+   {
+    "tool": "process_manage",
+    "failed": 3,
+    "of": 187,
+    "pct": 1.6
+   }
+  ]
+ },
+ "motion": {
+  "repeats": 133,
+  "top": [
+   [
+    "terminal",
+    71
+   ],
+   [
+    "tool_call",
+    52
+   ],
+   [
+    "write_file",
+    5
+   ],
+   [
+    "execute_code",
+    2
+   ],
+   [
+    "delegate_task",
+    1
+   ],
+   [
+    "patch",
+    1
+   ]
+  ]
+ },
+ "inventory": [
+  {
+   "tool": "delegate_task",
+   "schema_tokens": 1056,
+   "uses": 9,
+   "shipped_tokens": 10949664,
+   "tokens_per_use": 1216629
+  },
+  {
+   "tool": "skill_manage",
+   "schema_tokens": 954,
+   "uses": 3,
+   "shipped_tokens": 9892026,
+   "tokens_per_use": 3297342
+  },
+  {
+   "tool": "memory",
+   "schema_tokens": 811,
+   "uses": 3,
+   "shipped_tokens": 8409259,
+   "tokens_per_use": 2803086
+  },
+  {
+   "tool": "execute_code",
+   "schema_tokens": 799,
+   "uses": 956,
+   "shipped_tokens": 8284831,
+   "tokens_per_use": 8666
+  },
+  {
+   "tool": "browser_exec",
+   "schema_tokens": 796,
+   "uses": 29,
+   "shipped_tokens": 8253724,
+   "tokens_per_use": 284611
+  },
+  {
+   "tool": "terminal",
+   "schema_tokens": 660,
+   "uses": 6309,
+   "shipped_tokens": 6843540,
+   "tokens_per_use": 1085
+  },
+  {
+   "tool": "search_files",
+   "schema_tokens": 574,
+   "uses": 71,
+   "shipped_tokens": 5951806,
+   "tokens_per_use": 83828
+  },
+  {
+   "tool": "clarify",
+   "schema_tokens": 415,
+   "uses": 0,
+   "shipped_tokens": 4303135,
+   "tokens_per_use": null
+  },
+  {
+   "tool": "tool_search",
+   "schema_tokens": 375,
+   "uses": 5,
+   "shipped_tokens": 3888375,
+   "tokens_per_use": 777675
+  },
+  {
+   "tool": "read_file",
+   "schema_tokens": 328,
+   "uses": 1479,
+   "shipped_tokens": 3401032,
+   "tokens_per_use": 2300
+  },
+  {
+   "tool": "web_extract",
+   "schema_tokens": 273,
+   "uses": 13,
+   "shipped_tokens": 2830737,
+   "tokens_per_use": 217749
+  },
+  {
+   "tool": "write_file",
+   "schema_tokens": 262,
+   "uses": 587,
+   "shipped_tokens": 2716678,
+   "tokens_per_use": 4628
+  },
+  {
+   "tool": "patch",
+   "schema_tokens": 237,
+   "uses": 2885,
+   "shipped_tokens": 2457453,
+   "tokens_per_use": 852
+  },
+  {
+   "tool": "vision_analyze",
+   "schema_tokens": 223,
+   "uses": 542,
+   "shipped_tokens": 2312287,
+   "tokens_per_use": 4266
+  },
+  {
+   "tool": "skill_view",
+   "schema_tokens": 219,
+   "uses": 11,
+   "shipped_tokens": 2270811,
+   "tokens_per_use": 206437
+  },
+  {
+   "tool": "web_search",
+   "schema_tokens": 207,
+   "uses": 16,
+   "shipped_tokens": 2146383,
+   "tokens_per_use": 134149
+  },
+  {
+   "tool": "tool_call",
+   "schema_tokens": 179,
+   "uses": 207,
+   "shipped_tokens": 1856051,
+   "tokens_per_use": 8966
+  },
+  {
+   "tool": "tool_describe",
+   "schema_tokens": 123,
+   "uses": 8,
+   "shipped_tokens": 1275387,
+   "tokens_per_use": 159423
+  },
+  {
+   "tool": "skills_list",
+   "schema_tokens": 76,
+   "uses": 0,
+   "shipped_tokens": 788044,
+   "tokens_per_use": null
+  }
+ ],
+ "lead_time": {
+  "model_step_median_s": 13.6,
+  "tool_step_median_s": 0.2,
+  "model_total_h": 166.6,
+  "tool_total_h": 27.9,
+  "model_steps": 10433,
+  "tool_steps": 10174
+ },
+ "end_reasons": {
+  "cli_close": 100,
+  "cron_complete": 77,
+  "(open)": 12,
+  "agent_close": 12,
+  "session_reset": 11
+ },
+ "whatif_prune": [
+  {
+   "trigger_tokens": 32000,
+   "prompt_now": 1186064388,
+   "prompt_with_prune": 929133758,
+   "saved": 256930630,
+   "saved_pct": 21.7,
+   "prunes": 349,
+   "recompute": 6513036,
+   "net_saved": 250417594
+  },
+  {
+   "trigger_tokens": 48000,
+   "prompt_now": 1186064388,
+   "prompt_with_prune": 945357195,
+   "saved": 240707193,
+   "saved_pct": 20.3,
+   "prunes": 272,
+   "recompute": 6484980,
+   "net_saved": 234222213
+  },
+  {
+   "trigger_tokens": 96000,
+   "prompt_now": 1186064388,
+   "prompt_with_prune": 982591247,
+   "saved": 203473141,
+   "saved_pct": 17.2,
+   "prunes": 130,
+   "recompute": 5608103,
+   "net_saved": 197865038
+  }
+ ]
+}

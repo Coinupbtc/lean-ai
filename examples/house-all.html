@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lean audit · Hermes house, Jun 28 – Oct 28</title>
+<meta name="color-scheme" content="dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0c0e13; --ink-2: #12151c; --ink-3: #1a1e27; --paper: #ece8df; --acid: #c8f54a;
+    --mute: #8b9287; --line: color-mix(in srgb, var(--paper) 14%, transparent);
+    --c-system: #6f7a8c; --c-tools: #4f86a8; --c-wip: #c8f54a; --c-asst: #e0a458; --c-user: #b48ead; --c-gap: #2a2f39;
+    --display: Fraunces, Georgia, serif; --mono: "IBM Plex Mono", ui-monospace, monospace;
+    --pad: clamp(1rem, 4vw, 3rem);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--ink); color: var(--paper); font: .92rem/1.65 var(--mono); overflow-x: hidden; }
+  .wrap { width: min(980px, 100%); margin-inline: auto; padding: 0 var(--pad) 3rem; }
+  header { padding: 2.2rem 0 1.4rem; border-bottom: 1px solid var(--line); }
+  .kicker { font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; color: var(--mute); }
+  h1 { font: 700 clamp(1.9rem, 6vw, 3.2rem)/1.02 var(--display); letter-spacing: -.03em; margin: .6rem 0 .5rem; }
+  h1 em { font-style: normal; color: var(--acid); }
+  h2 { font: 500 1.3rem/1.2 var(--display); margin: 2.6rem 0 .3rem; }
+  .sub { color: var(--mute); font-size: .8rem; margin-bottom: 1rem; max-width: 70ch; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); margin-top: 1.4rem; }
+  .stat { background: var(--ink); padding: .9rem 1rem; }
+  .stat b { display: block; font: 500 1.55rem/1.1 var(--display); color: var(--paper); font-variant-numeric: tabular-nums; }
+  .stat span { font-size: .7rem; color: var(--mute); letter-spacing: .06em; }
+  .stat.hot b { color: var(--acid); }
+  .bar { display: flex; height: 44px; width: 100%; border-radius: 3px; overflow: hidden; margin: 1rem 0 .7rem; background: var(--c-gap); }
+  .bar div { height: 100%; min-width: 2px; transition: opacity .15s; }
+  .bar div:hover { opacity: .8; }
+  .legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: .35rem 1.2rem; font-size: .8rem; }
+  .legend i { display: inline-block; width: .7rem; height: .7rem; border-radius: 2px; margin-right: .45rem; vertical-align: -1px; }
+  .legend .v { color: var(--mute); }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1rem; margin-top: 1rem; }
+  .card { background: var(--ink-2); border: 1px solid var(--line); border-radius: 4px; padding: 1rem 1.1rem 1.1rem; }
+  .card .lean { font-size: .68rem; letter-spacing: .16em; text-transform: uppercase; color: var(--mute); }
+  .card .num { font: 500 1.9rem/1.1 var(--display); margin: .35rem 0 .15rem; font-variant-numeric: tabular-nums; }
+  .card.big { border-color: color-mix(in srgb, var(--acid) 55%, transparent); }
+  .card.big .num { color: var(--acid); }
+  .card .what { font-size: .82rem; }
+  .card .note { font-size: .74rem; color: var(--mute); margin-top: .5rem; }
+  .rows { margin-top: 1rem; }
+  .row { display: grid; grid-template-columns: 9.5rem 1fr 6rem; align-items: center; gap: .8rem; font-size: .8rem; padding: .22rem 0; }
+  .row .track { background: var(--ink-3); height: 14px; border-radius: 2px; overflow: hidden; }
+  .row .fill { height: 100%; background: var(--acid); }
+  .row .fill.cool { background: var(--c-tools); }
+  .row .n { text-align: right; color: var(--mute); font-variant-numeric: tabular-nums; }
+  .scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { border-collapse: collapse; width: 100%; min-width: 560px; margin-top: 1rem; font-size: .8rem; font-variant-numeric: tabular-nums; }
+  th, td { text-align: right; padding: .45rem .6rem; border-bottom: 1px solid var(--line); }
+  th:first-child, td:first-child { text-align: left; }
+  th { color: var(--mute); font-weight: 500; font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; }
+  td.hot { color: var(--acid); }
+  td.cold { color: var(--mute); }
+  .check { margin-top: 1rem; font-size: .78rem; color: var(--mute); border-left: 2px solid var(--acid); padding-left: .9rem; }
+  footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--line); font-size: .72rem; color: var(--mute); }
+  a { color: var(--acid); text-underline-offset: 3px; }
+  @media (max-width: 560px) {
+    .row { grid-template-columns: 6.5rem 1fr 4.5rem; gap: .5rem; }
+    table.inv { min-width: 0; }
+    table.inv th:nth-child(4), table.inv td:nth-child(4) { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+const R = {"tool": "leanaudit 0.1.0", "generated": "2026-10-28T23:29:28-05:00", "label": "Hermes house, Jun 28 \u2013 Oct 28", "window": {"since": null, "until": "2026-10-28T23:20"}, "tokenizer": "exact", "profiles": {"hermes": 93, "dobby": 424, "freegle": 176, "gametest": 66, "orchestrator": 1515, "smeagle": 347}, "totals": {"sessions": 2621, "api_calls": 79870, "tool_calls": 96337, "prompt": 7306845635, "uncached": 2364791262, "cached": 4942054373, "output": 35963295, "reasoning": 9974329, "aux_prompt": 295274478}, "headline": {"read_per_write": 211, "value_ratio_pct": 0.47, "prompt_per_call": 91484, "system_prompt_tokens_median": 11133, "tool_schema_tokens": null, "tool_count": null}, "wastes": [{"key": "overprocessing", "lean": "Overprocessing", "what": "Fixed prefix re-sent on every model call (system prompt + tool schemas)", "tokens": 1061432857, "share_of_prompt": 14.5, "note": "System prompt measured per session from its exact text; tool schemas not given."}, {"key": "wip", "lean": "Inventory (WIP)", "what": "Tool output carried in context and re-read by every later call in the session", "tokens": 3607177981, "share_of_prompt": 49.4, "note": "Each tool-output token was re-read 47.6\u00d7 on average. Reasoning text is not counted."}, {"key": "waiting", "lean": "Waiting", "what": "Prompt tokens the engine had to compute (cache miss) on engines that report cache", "tokens": 291431843, "share_of_prompt": 5.6, "note": "28.4% of prompt tokens ran in sessions with zero reported cache reads (engine doesn't report hits); left out, not called waste."}, {"key": "inspection", "lean": "Inspection", "what": "Scheduled runs that checked and found nothing to say ([SILENT]) + after-session reviews", "tokens": 588548530, "share_of_prompt": 7.7, "note": "Necessary non-value-added: the Lean move is cheaper inspection, not no inspection."}, {"key": "defects", "lean": "Defects", "what": "Tool calls the tool itself reported as failed, and runs that died with no output", "tokens": 96577319, "count": 3376, "rate": 3.3, "share_of_prompt": 1.3, "note": "3,821 non-zero shell exits are excluded (grep exits 1 on no match)."}, {"key": "motion", "lean": "Motion", "what": "Tool calls identical (same tool, same arguments) to an earlier call in the same session", "count": 8832, "rate": 8.6, "note": "Some repeats are legitimate (re-running a test after a fix); this is the ceiling, not the floor."}], "outcome_split": {"delivered_or_chat": 6912035662, "silent_inspection": 298232654, "dead_runs": 96577319, "aux": 295274478, "cron_runs": 964, "silent_runs": 137, "dead_sessions": 215}, "prefix_split": {"system": 1061432857, "tools": 0, "conversation": 6245412778}, "wip": {"history_reread": 5393578756, "tool_output": 3607177981, "assistant": 1613788130, "user": 172612645, "tool_output_written": 75707255, "tool_output_reread_x": 47.6, "top_carried_tools": [{"tool": "terminal", "tokens": 1480065425, "share": 41.0}, {"tool": "read_file", "tokens": 1075019863, "share": 29.8}, {"tool": "web_extract", "tokens": 186644240, "share": 5.2}, {"tool": "kanban_show", "tokens": 184630692, "share": 5.1}, {"tool": "patch", "tokens": 175276202, "share": 4.9}, {"tool": "execute_code", "tokens": 167400283, "share": 4.6}, {"tool": "vision_analyze", "tokens": 58045728, "share": 1.6}, {"tool": "skill_view", "tokens": 57384586, "share": 1.6}], "self_check": {"modeled_prompt": 6455011613, "measured_prompt": 7306845635, "modeled_over_measured": 0.883}}, "cache": {"reporting_models": ["(unset)", "GLM-5.3-Flash-EXL3", "GLM-5.3-Flash-EXL3-TensorFold", "Qwen3.6-27B-NVFP4", "Qwen3.6-35B-A3B-UD-Q8_K_XL.gguf", "Qwen3.8-27B", "deepseek-v4-flash", "deepseek-v4-flash-0731", "deepseek-v4-flash-latest", "deepseek-v4.1-flash", "dream-baton", "gemini-3.6-flash", "gemma3:1b", "hy3:free", "ling-3.0-flash-fin:free", "mimo-v2.5-pro", "ox-alpha", "q36-35b-a3b-nvfp4.gguf", "qwen3.8-27b-sglang"], "miss_pct_reporting": 5.6, "unreported_prompt": 2073359419}, "aux": {"background_review": {"calls": 2404, "prompt": 290315876, "output": 1474082}, "approval": {"calls": 3366, "prompt": 1982596, "output": 699882}, "vision": {"calls": 1608, "prompt": 1515524, "output": 1576861}, "compression": {"calls": 247, "prompt": 1264073, "output": 392777}, "title_generation": {"calls": 558, "prompt": 190781, "output": 136343}, "goal_judge": {"calls": 4, "prompt": 5628, "output": 2086}}, "by_source": {"cron": {"sessions": 964, "prompt": 1899558483, "output": 5716728, "api_calls": 25968}, "telegram": {"sessions": 476, "prompt": 1891306117, "output": 7741643, "api_calls": 19669}, "kanban": {"sessions": 332, "prompt": 1521890052, "output": 7333895, "api_calls": 14270}, "oneshot": {"sessions": 159, "prompt": 1361157174, "output": 9330957, "api_calls": 9869}, "cli": {"sessions": 549, "prompt": 408746709, "output": 3382073, "api_calls": 6825}, "subagent": {"sessions": 25, "prompt": 76671569, "output": 659178, "api_calls": 834}, "playtest": {"sessions": 13, "prompt": 73388599, "output": 786476, "api_calls": 617}, "tui": {"sessions": 92, "prompt": 71220105, "output": 1005831, "api_calls": 1773}, "unknown": {"sessions": 3, "prompt": 2860055, "output": 6507, "api_calls": 43}, "cli-test": {"sessions": 1, "prompt": 27263, "output": 4, "api_calls": 1}, "tool": {"sessions": 1, "prompt": 19509, "output": 3, "api_calls": 1}, "probe": {"sessions": 4, "prompt": 0, "output": 0, "api_calls": 0}, "recovered": {"sessions": 2, "prompt": 0, "output": 0, "api_calls": 0}}, "tool_results": {"total": 102545, "failed": 3376, "failed_pct": 3.3, "nonzero_exit": 3821, "top_failed": [{"tool": "terminal", "failed": 1236, "of": 54930, "pct": 2.3}, {"tool": "execute_code", "failed": 550, "of": 4868, "pct": 11.3}, {"tool": "patch", "failed": 376, "of": 8749, "pct": 4.3}, {"tool": "write_file", "failed": 192, "of": 5446, "pct": 3.5}, {"tool": "read_file", "failed": 191, "of": 11436, "pct": 1.7}, {"tool": "memory", "failed": 173, "of": 332, "pct": 52.1}, {"tool": "vision_analyze", "failed": 120, "of": 1905, "pct": 6.3}, {"tool": "kanban_complete", "failed": 72, "of": 463, "pct": 15.6}]}, "motion": {"repeats": 8832, "top": [["terminal", 4854], ["read_file", 1054], ["kanban_show", 434], ["patch", 377], ["process", 362], ["write_file", 331]]}, "inventory": [], "lead_time": {"model_step_median_s": 7.5, "tool_step_median_s": 0.1, "model_total_h": 650.7, "tool_total_h": 189.8, "model_steps": 94451, "tool_steps": 85574}, "end_reasons": {"cron_complete": 793, "(open)": 681, "session_reset": 392, "compression": 287, "cli_close": 215, "startup_orphan_reap": 161, "cron_incomplete_no_output": 54, "agent_close": 38}, "whatif_prune": []};
+const $ = (h) => { const t = document.createElement('template'); t.innerHTML = h.trim(); return t.content; };
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const tok = (n) => { if (n == null) return '–'; const a = Math.abs(n);
+  return a >= 1e9 ? (n/1e9).toFixed(2)+'B' : a >= 1e6 ? (n/1e6).toFixed(1)+'M' : a >= 1e3 ? (n/1e3).toFixed(1)+'K' : String(Math.round(n)); };
+const int = (n) => n == null ? '–' : Math.round(n).toLocaleString('en-US');
+const app = document.getElementById('app');
+const t = R.totals, h = R.headline, W = Object.fromEntries(R.wastes.map(w => [w.key, w]));
+const readAll = t.prompt + (t.aux_prompt || 0);
+
+app.append($(`<header>
+  <div class="kicker">leanaudit · ${esc(R.label)} · ${esc(R.window.since || 'start')} → ${esc(R.window.until || 'now')}</div>
+  <h1>For every token it wrote, the agent read <em>${int(h.read_per_write)}</em>.</h1>
+  <p class="sub">${int(t.sessions)} sessions, ${int(t.api_calls)} model calls and ${int(t.tool_calls)} tool calls of Hermes Agent,
+  sorted into the wastes a Lean engineer looks for on a factory floor. Token counts: ${esc(R.tokenizer)}.</p>
+  <div class="stats">
+    <div class="stat"><b>${tok(readAll)}</b><span>tokens read</span></div>
+    <div class="stat"><b>${tok(t.output)}</b><span>tokens written</span></div>
+    <div class="stat"><b>${int(h.prompt_per_call)}</b><span>read per model call</span></div>
+    <div class="stat hot"><b>${W.wip ? W.wip.share_of_prompt + '%' : '–'}</b><span>is old tool output</span></div>
+  </div>
+</header>`));
+
+// Where every prompt token goes: rebuilt from parts, remainder shown as unmodeled.
+const P = R.prefix_split, X = R.wip;
+const parts = [
+  ['System prompt, every call', P.system, 'var(--c-system)'],
+  ['Tool schemas, every call', P.tools, 'var(--c-tools)'],
+  ['Old tool output, re-read', X.tool_output, 'var(--c-wip)'],
+  ['Agent\'s own earlier replies', X.assistant, 'var(--c-asst)'],
+  ['User messages', X.user, 'var(--c-user)'],
+  ['Not rebuilt (template, reasoning replay, injected context)', Math.max(0, t.prompt - X.self_check.modeled_prompt), 'var(--c-gap)'],
+].filter(p => p[1] > 0);
+const sum = parts.reduce((a, p) => a + p[1], 0);
+app.append($(`<section>
+  <h2>Where every prompt token goes</h2>
+  <p class="sub">Each model call re-reads the fixed prefix plus everything said so far. The bar rebuilds that stream message by message
+  and checks it against what Hermes measured: ${(X.self_check.modeled_over_measured * 100).toFixed(1)}% accounted for.</p>
+  <div class="bar" role="img" aria-label="Prompt token breakdown">${parts.map(p =>
+    `<div style="flex:${p[1]};background:${p[2]}" title="${esc(p[0])}: ${tok(p[1])}"></div>`).join('')}</div>
+  <div class="legend">${parts.map(p =>
+    `<div><i style="background:${p[2]}"></i>${esc(p[0])} <span class="v">${tok(p[1])} · ${(100*p[1]/sum).toFixed(1)}%</span></div>`).join('')}</div>
+</section>`));
+
+// The wastes.
+const numOf = (w) => w.share_of_prompt != null && w.tokens ? w.share_of_prompt + '%' : w.rate != null ? w.rate + '%' : tok(w.tokens);
+const unitOf = (w) => w.share_of_prompt != null && w.tokens ? `${tok(w.tokens)} tokens` : w.count != null ? `${int(w.count)} events` : '';
+app.append($(`<section>
+  <h2>The waste walk</h2>
+  <p class="sub">Lean's wastes, translated to an agent. Percentages are of prompt tokens unless the card counts events.</p>
+  <div class="cards">${R.wastes.map(w => `<div class="card ${w.key === 'wip' ? 'big' : ''}">
+    <div class="lean">${esc(w.lean)}</div>
+    <div class="num">${numOf(w)}</div>
+    <div class="note" style="margin:0 0 .45rem">${unitOf(w)}</div>
+    <div class="what">${esc(w.what)}</div>
+    <div class="note">${esc(w.note)}</div></div>`).join('')}</div>
+</section>`));
+
+// WIP by tool.
+if (X.top_carried_tools && X.top_carried_tools.length) {
+  const mx = X.top_carried_tools[0].tokens;
+  app.append($(`<section>
+    <h2>Which tools fill the context</h2>
+    <p class="sub">Tool output re-read by later calls, by the tool that produced it. On average each tool-output token was read
+    <b style="color:var(--acid)">${X.tool_output_reread_x}×</b> after it was first written.</p>
+    <div class="rows">${X.top_carried_tools.map(r => `<div class="row"><span>${esc(r.tool)}</span>
+      <div class="track"><div class="fill" style="width:${(100*r.tokens/mx).toFixed(1)}%"></div></div>
+      <span class="n">${tok(r.tokens)}</span></div>`).join('')}</div>
+  </section>`));
+}
+
+// Idle stock: schemas shipped vs used.
+if (R.inventory && R.inventory.length) {
+  const rows = [...R.inventory].sort((a, b) => (b.tokens_per_use ?? 1e18) - (a.tokens_per_use ?? 1e18));
+  app.append($(`<section>
+    <h2>Tool schemas: shipped vs used</h2>
+    <p class="sub">Every tool's schema rides along on every call. Tokens shipped per actual use shows which ones earn their place.
+    ${int(h.tool_count)} tools, ${int(h.tool_schema_tokens)} tokens per call.</p>
+    <div class="scroll"><table class="inv"><thead><tr><th>Tool</th><th>Schema</th><th>Uses</th><th>Shipped</th><th>Shipped per use</th></tr></thead>
+    <tbody>${rows.map(i => `<tr><td>${esc(i.tool)}</td><td>${int(i.schema_tokens)}</td><td>${int(i.uses)}</td><td>${tok(i.shipped_tokens)}</td>
+      <td class="${i.tokens_per_use == null || i.tokens_per_use > 1e5 ? 'hot' : 'cold'}">${i.tokens_per_use == null ? 'never used' : tok(i.tokens_per_use)}</td></tr>`).join('')}</tbody></table></div>
+  </section>`));
+}
+
+// What-if: Hermes' own proactive prune.
+if (R.whatif_prune && R.whatif_prune.length) {
+  app.append($(`<section>
+    <h2>What if old tool output were cleared?</h2>
+    <p class="sub">Hermes ships <code>compression.proactive_prune_tokens</code>, off by default. This replays every session under its
+    rules: past the trigger, tool results over 8,000 characters outside the last 6 messages become one-line summaries. Each prune
+    rewrites history, so the cache has to recompute from that point once.</p>
+    <div class="scroll"><table><thead><tr><th>Trigger</th><th>Read now*</th><th>With prune*</th><th>Saved</th><th>Cache breaks</th><th>Recompute</th></tr></thead>
+    <tbody>${R.whatif_prune.map(w => `<tr><td>${int(w.trigger_tokens)}</td><td>${tok(w.prompt_now)}</td><td>${tok(w.prompt_with_prune)}</td>
+      <td class="hot">−${w.saved_pct}%</td><td>${int(w.prunes)}</td><td>${tok(w.recompute)}</td></tr>`).join('')}</tbody></table></div>
+    <p class="check">Tokens only: a replay can't know whether the agent needed the text it lost. A live trial measures that,
+    as repeat calls (Motion) and failed tool calls. *Both columns are the rebuilt stream, so they exclude the part not rebuilt.</p>
+  </section>`));
+}
+
+// Lead time.
+const L = R.lead_time;
+if (L.model_steps) {
+  const tot = L.model_total_h + L.tool_total_h;
+  app.append($(`<section>
+    <h2>Lead time: thinking vs doing</h2>
+    <p class="sub">Wall time between messages: model steps (prefill, reasoning, writing, queueing) vs tool steps (running the command).
+    Median model step ${L.model_step_median_s}s, median tool step ${L.tool_step_median_s}s.</p>
+    <div class="rows">
+      <div class="row"><span>model</span><div class="track"><div class="fill" style="width:${(100*L.model_total_h/tot).toFixed(1)}%"></div></div><span class="n">${L.model_total_h} h</span></div>
+      <div class="row"><span>tools</span><div class="track"><div class="fill cool" style="width:${(100*L.tool_total_h/tot).toFixed(1)}%"></div></div><span class="n">${L.tool_total_h} h</span></div>
+    </div>
+  </section>`));
+}
+
+app.append($(`<footer>${esc(R.tool)} · generated ${esc(R.generated)} · read-only, aggregates only: no message text, prompts or ids.
+  · <a href="https://github.com/Coinupbtc/lean-ai">github.com/Coinupbtc/lean-ai</a></footer>`));
+</script>
+</body>
+</html>

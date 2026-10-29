@@ -1,0 +1,400 @@
+{
+ "tool": "leanaudit 0.1.0",
+ "generated": "2026-10-28T23:29:28-05:00",
+ "label": "Hermes house, Jun 28 \u2013 Oct 28",
+ "window": {
+  "since": null,
+  "until": "2026-10-28T23:20"
+ },
+ "tokenizer": "exact",
+ "profiles": {
+  "hermes": 93,
+  "dobby": 424,
+  "freegle": 176,
+  "gametest": 66,
+  "orchestrator": 1515,
+  "smeagle": 347
+ },
+ "totals": {
+  "sessions": 2621,
+  "api_calls": 79870,
+  "tool_calls": 96337,
+  "prompt": 7306845635,
+  "uncached": 2364791262,
+  "cached": 4942054373,
+  "output": 35963295,
+  "reasoning": 9974329,
+  "aux_prompt": 295274478
+ },
+ "headline": {
+  "read_per_write": 211,
+  "value_ratio_pct": 0.47,
+  "prompt_per_call": 91484,
+  "system_prompt_tokens_median": 11133,
+  "tool_schema_tokens": null,
+  "tool_count": null
+ },
+ "wastes": [
+  {
+   "key": "overprocessing",
+   "lean": "Overprocessing",
+   "what": "Fixed prefix re-sent on every model call (system prompt + tool schemas)",
+   "tokens": 1061432857,
+   "share_of_prompt": 14.5,
+   "note": "System prompt measured per session from its exact text; tool schemas not given."
+  },
+  {
+   "key": "wip",
+   "lean": "Inventory (WIP)",
+   "what": "Tool output carried in context and re-read by every later call in the session",
+   "tokens": 3607177981,
+   "share_of_prompt": 49.4,
+   "note": "Each tool-output token was re-read 47.6\u00d7 on average. Reasoning text is not counted."
+  },
+  {
+   "key": "waiting",
+   "lean": "Waiting",
+   "what": "Prompt tokens the engine had to compute (cache miss) on engines that report cache",
+   "tokens": 291431843,
+   "share_of_prompt": 5.6,
+   "note": "28.4% of prompt tokens ran in sessions with zero reported cache reads (engine doesn't report hits); left out, not called waste."
+  },
+  {
+   "key": "inspection",
+   "lean": "Inspection",
+   "what": "Scheduled runs that checked and found nothing to say ([SILENT]) + after-session reviews",
+   "tokens": 588548530,
+   "share_of_prompt": 7.7,
+   "note": "Necessary non-value-added: the Lean move is cheaper inspection, not no inspection."
+  },
+  {
+   "key": "defects",
+   "lean": "Defects",
+   "what": "Tool calls the tool itself reported as failed, and runs that died with no output",
+   "tokens": 96577319,
+   "count": 3376,
+   "rate": 3.3,
+   "share_of_prompt": 1.3,
+   "note": "3,821 non-zero shell exits are excluded (grep exits 1 on no match)."
+  },
+  {
+   "key": "motion",
+   "lean": "Motion",
+   "what": "Tool calls identical (same tool, same arguments) to an earlier call in the same session",
+   "count": 8832,
+   "rate": 8.6,
+   "note": "Some repeats are legitimate (re-running a test after a fix); this is the ceiling, not the floor."
+  }
+ ],
+ "outcome_split": {
+  "delivered_or_chat": 6912035662,
+  "silent_inspection": 298232654,
+  "dead_runs": 96577319,
+  "aux": 295274478,
+  "cron_runs": 964,
+  "silent_runs": 137,
+  "dead_sessions": 215
+ },
+ "prefix_split": {
+  "system": 1061432857,
+  "tools": 0,
+  "conversation": 6245412778
+ },
+ "wip": {
+  "history_reread": 5393578756,
+  "tool_output": 3607177981,
+  "assistant": 1613788130,
+  "user": 172612645,
+  "tool_output_written": 75707255,
+  "tool_output_reread_x": 47.6,
+  "top_carried_tools": [
+   {
+    "tool": "terminal",
+    "tokens": 1480065425,
+    "share": 41.0
+   },
+   {
+    "tool": "read_file",
+    "tokens": 1075019863,
+    "share": 29.8
+   },
+   {
+    "tool": "web_extract",
+    "tokens": 186644240,
+    "share": 5.2
+   },
+   {
+    "tool": "kanban_show",
+    "tokens": 184630692,
+    "share": 5.1
+   },
+   {
+    "tool": "patch",
+    "tokens": 175276202,
+    "share": 4.9
+   },
+   {
+    "tool": "execute_code",
+    "tokens": 167400283,
+    "share": 4.6
+   },
+   {
+    "tool": "vision_analyze",
+    "tokens": 58045728,
+    "share": 1.6
+   },
+   {
+    "tool": "skill_view",
+    "tokens": 57384586,
+    "share": 1.6
+   }
+  ],
+  "self_check": {
+   "modeled_prompt": 6455011613,
+   "measured_prompt": 7306845635,
+   "modeled_over_measured": 0.883
+  }
+ },
+ "cache": {
+  "reporting_models": [
+   "(unset)",
+   "GLM-5.3-Flash-EXL3",
+   "GLM-5.3-Flash-EXL3-TensorFold",
+   "Qwen3.6-27B-NVFP4",
+   "Qwen3.6-35B-A3B-UD-Q8_K_XL.gguf",
+   "Qwen3.8-27B",
+   "deepseek-v4-flash",
+   "deepseek-v4-flash-0731",
+   "deepseek-v4-flash-latest",
+   "deepseek-v4.1-flash",
+   "dream-baton",
+   "gemini-3.6-flash",
+   "gemma3:1b",
+   "hy3:free",
+   "ling-3.0-flash-fin:free",
+   "mimo-v2.5-pro",
+   "ox-alpha",
+   "q36-35b-a3b-nvfp4.gguf",
+   "qwen3.8-27b-sglang"
+  ],
+  "miss_pct_reporting": 5.6,
+  "unreported_prompt": 2073359419
+ },
+ "aux": {
+  "background_review": {
+   "calls": 2404,
+   "prompt": 290315876,
+   "output": 1474082
+  },
+  "approval": {
+   "calls": 3366,
+   "prompt": 1982596,
+   "output": 699882
+  },
+  "vision": {
+   "calls": 1608,
+   "prompt": 1515524,
+   "output": 1576861
+  },
+  "compression": {
+   "calls": 247,
+   "prompt": 1264073,
+   "output": 392777
+  },
+  "title_generation": {
+   "calls": 558,
+   "prompt": 190781,
+   "output": 136343
+  },
+  "goal_judge": {
+   "calls": 4,
+   "prompt": 5628,
+   "output": 2086
+  }
+ },
+ "by_source": {
+  "cron": {
+   "sessions": 964,
+   "prompt": 1899558483,
+   "output": 5716728,
+   "api_calls": 25968
+  },
+  "telegram": {
+   "sessions": 476,
+   "prompt": 1891306117,
+   "output": 7741643,
+   "api_calls": 19669
+  },
+  "kanban": {
+   "sessions": 332,
+   "prompt": 1521890052,
+   "output": 7333895,
+   "api_calls": 14270
+  },
+  "oneshot": {
+   "sessions": 159,
+   "prompt": 1361157174,
+   "output": 9330957,
+   "api_calls": 9869
+  },
+  "cli": {
+   "sessions": 549,
+   "prompt": 408746709,
+   "output": 3382073,
+   "api_calls": 6825
+  },
+  "subagent": {
+   "sessions": 25,
+   "prompt": 76671569,
+   "output": 659178,
+   "api_calls": 834
+  },
+  "playtest": {
+   "sessions": 13,
+   "prompt": 73388599,
+   "output": 786476,
+   "api_calls": 617
+  },
+  "tui": {
+   "sessions": 92,
+   "prompt": 71220105,
+   "output": 1005831,
+   "api_calls": 1773
+  },
+  "unknown": {
+   "sessions": 3,
+   "prompt": 2860055,
+   "output": 6507,
+   "api_calls": 43
+  },
+  "cli-test": {
+   "sessions": 1,
+   "prompt": 27263,
+   "output": 4,
+   "api_calls": 1
+  },
+  "tool": {
+   "sessions": 1,
+   "prompt": 19509,
+   "output": 3,
+   "api_calls": 1
+  },
+  "probe": {
+   "sessions": 4,
+   "prompt": 0,
+   "output": 0,
+   "api_calls": 0
+  },
+  "recovered": {
+   "sessions": 2,
+   "prompt": 0,
+   "output": 0,
+   "api_calls": 0
+  }
+ },
+ "tool_results": {
+  "total": 102545,
+  "failed": 3376,
+  "failed_pct": 3.3,
+  "nonzero_exit": 3821,
+  "top_failed": [
+   {
+    "tool": "terminal",
+    "failed": 1236,
+    "of": 54930,
+    "pct": 2.3
+   },
+   {
+    "tool": "execute_code",
+    "failed": 550,
+    "of": 4868,
+    "pct": 11.3
+   },
+   {
+    "tool": "patch",
+    "failed": 376,
+    "of": 8749,
+    "pct": 4.3
+   },
+   {
+    "tool": "write_file",
+    "failed": 192,
+    "of": 5446,
+    "pct": 3.5
+   },
+   {
+    "tool": "read_file",
+    "failed": 191,
+    "of": 11436,
+    "pct": 1.7
+   },
+   {
+    "tool": "memory",
+    "failed": 173,
+    "of": 332,
+    "pct": 52.1
+   },
+   {
+    "tool": "vision_analyze",
+    "failed": 120,
+    "of": 1905,
+    "pct": 6.3
+   },
+   {
+    "tool": "kanban_complete",
+    "failed": 72,
+    "of": 463,
+    "pct": 15.6
+   }
+  ]
+ },
+ "motion": {
+  "repeats": 8832,
+  "top": [
+   [
+    "terminal",
+    4854
+   ],
+   [
+    "read_file",
+    1054
+   ],
+   [
+    "kanban_show",
+    434
+   ],
+   [
+    "patch",
+    377
+   ],
+   [
+    "process",
+    362
+   ],
+   [
+    "write_file",
+    331
+   ]
+  ]
+ },
+ "inventory": [],
+ "lead_time": {
+  "model_step_median_s": 7.5,
+  "tool_step_median_s": 0.1,
+  "model_total_h": 650.7,
+  "tool_total_h": 189.8,
+  "model_steps": 94451,
+  "tool_steps": 85574
+ },
+ "end_reasons": {
+  "cron_complete": 793,
+  "(open)": 681,
+  "session_reset": 392,
+  "compression": 287,
+  "cli_close": 215,
+  "startup_orphan_reap": 161,
+  "cron_incomplete_no_output": 54,
+  "agent_close": 38
+ },
+ "whatif_prune": []
+}
