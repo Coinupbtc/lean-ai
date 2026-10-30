@@ -81,7 +81,29 @@ orch, Oct 20–28. The recompute is small next to the 139 M tokens of cache miss
 
 **Live trial:** `proactive_prune_tokens: 48000` on the orch profile since **2026-10-28 23:20 CDT**. A replay can't
 tell whether the agent needed the text it lost, so the trial watches two quality guards: repeat calls (Motion) and
-failed tool calls. Results go here when there's enough data to compare.
+failed tool calls.
+
+**Second read, 2026-10-29 20:00 CDT** (20.7 h; 10 sessions, 368 model calls; before = the 3 days before the switch):
+
+| | Before | After |
+|---|---:|---:|
+| Sessions where a prune committed | — | 8 of 10 |
+| Tool results cut to a one-line stub | 0 | 17 (368K characters) |
+| Failed tool calls | 0.51% (18 / 3,558) | 0.35% (2 / 574) |
+| Repeat calls (same tool + arguments, same session) | 2.6% (94 / 3,558) | 3.3% (19 / 574) |
+| Scheduled jobs, prompt tokens per call | 86.5K (3 days) · 61.6K (last 24 h) | 65.4K |
+| Scheduled jobs, median session | 38.7K (3 days) · 37.0K (last 24 h) | 40.3K |
+
+What it shows so far: the prune fires the way the code says it should, and neither quality guard has moved
+outside noise (19 repeats where the old rate predicts 15). It does **not** show a token saving yet. Prompt per call
+across all traffic fell from 135K to 93K, but the before window includes 12 game-building sessions (156K per call)
+that moved off this profile before the switch, so that drop is traffic mix, not the prune. Like for like,
+scheduled jobs are flat, and most of them never grow past a 48K trigger. The replay finds its savings in long chat
+sessions, and there have been two since the switch. The next read compares those once there are enough.
+
+Measured read-only on the profile's `state.db`: prompt = Hermes-reported input + cache-read tokens per model call,
+main agent only, sessions grouped by start time. Stubs are counted from the rewritten rows (the original size is
+kept in each stub).
 
 ## Run it on your own Hermes
 
