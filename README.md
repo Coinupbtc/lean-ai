@@ -83,23 +83,25 @@ orch, Oct 20–28. The recompute is small next to the 139 M tokens of cache miss
 tell whether the agent needed the text it lost, so the trial watches two quality guards: repeat calls (Motion) and
 failed tool calls.
 
-**Second read, 2026-10-29 20:00 CDT** (20.7 h; 10 sessions, 368 model calls; before = the 3 days before the switch):
+**Latest read, 2026-10-30 10:31 CDT** (35.2 h; 17 sessions, 501 model calls; before = the 3 days before the switch):
 
 | | Before | After |
 |---|---:|---:|
-| Sessions where a prune committed | — | 8 of 10 |
-| Tool results cut to a one-line stub | 0 | 17 (368K characters) |
-| Failed tool calls | 0.51% (18 / 3,558) | 0.35% (2 / 574) |
-| Repeat calls (same tool + arguments, same session) | 2.6% (94 / 3,558) | 3.3% (19 / 574) |
-| Scheduled jobs, prompt tokens per call | 86.5K (3 days) · 61.6K (last 24 h) | 65.4K |
-| Scheduled jobs, median session | 38.7K (3 days) · 37.0K (last 24 h) | 40.3K |
+| Sessions where a prune committed | — | 11 of 17 |
+| Tool results cut to a one-line stub | 0 | 21 (515K characters) |
+| Failed tool calls | 0.51% (18 / 3,558) | 0.27% (2 / 745) |
+| Repeat calls (same tool + arguments, same session) | 2.6% (94 / 3,558) | 2.7% (20 / 745) |
+| Scheduled jobs, prompt tokens per call | 86.5K (3 days) · 61.6K (last 24 h) | 58.1K |
+| Scheduled jobs, median session | 38.7K (3 days) · 37.0K (last 24 h) | 40.8K |
 
-What it shows so far: the prune fires the way the code says it should, and neither quality guard has moved
-outside noise (19 repeats where the old rate predicts 15). It does **not** show a token saving yet. Prompt per call
-across all traffic fell from 135K to 93K, but the before window includes 12 game-building sessions (156K per call)
-that moved off this profile before the switch, so that drop is traffic mix, not the prune. Like for like,
-scheduled jobs are flat, and most of them never grow past a 48K trigger. The replay finds its savings in long chat
-sessions, and there have been two since the switch. The next read compares those once there are enough.
+What 35 hours show: the prune fires the way the code says it should — 21 tool results cut to stubs, 515K
+characters — and neither quality guard has moved outside noise (2.7% repeats against a 2.6% baseline, failed
+calls 0.27% against 0.51%). It still does **not** show a token saving. All-traffic prompt per call is 80K, which
+is *up* from 67.5K in the 24 h before the switch, because this window carried four Telegram sessions at 118K
+each: the mix moved back toward chat, not toward the prune. Like for like, scheduled jobs sit at 58.1K per call
+against 86.5K for the three-day baseline and 61.6K for the day before, with a median session of 40.8K against
+37.0K. That is noise, not a trend. The replay's saving is in long chat sessions, and four have run in 35 hours —
+still not enough to separate signal from mix.
 
 Measured read-only on the profile's `state.db`: prompt = Hermes-reported input + cache-read tokens per model call,
 main agent only, sessions grouped by start time. Stubs are counted from the rewritten rows (the original size is
