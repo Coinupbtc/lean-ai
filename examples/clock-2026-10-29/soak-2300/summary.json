@@ -1,0 +1,39 @@
+{
+ "rows": [
+  {
+   "phase": 1,
+   "level": "2300",
+   "reps": 25,
+   "clean": 22,
+   "c1_prose": 61.77843597601327,
+   "c1_code": 92.53917929663017,
+   "c4_agg": 105.12476893501113,
+   "ttft_8k": 2.6663996790302917,
+   "ttft_32k": 10.17679411493009,
+   "starve_gap_s": 0.9398391909780912,
+   "n1_c_mean": 70.20442708333333,
+   "n1_c_max": 76.0,
+   "n1_w_mean": 52.817220052083336,
+   "n1_w_max": 64.95,
+   "n1_sm_loaded": 2268.0,
+   "n1_sm_max": 2281.0,
+   "n1_zone_max": 91.0,
+   "n1_reasons_or": "0x0",
+   "n2_c_mean": 71.00519818063678,
+   "n2_c_max": 78.0,
+   "n2_w_mean": 52.62560103963613,
+   "n2_w_max": 64.79,
+   "n2_sm_loaded": 2275.0,
+   "n2_sm_max": 2281.0,
+   "n2_zone_max": 92.7,
+   "n2_reasons_or": "0x0",
+   "c1_prose_pct": null,
+   "c1_code_pct": null,
+   "c4_agg_pct": null,
+   "ttft_8k_speed_pct": null,
+   "ttft_32k_speed_pct": null,
+   "w_pair_mean": 105.44282109171947
+  }
+ ],
+ "settle_s": 60
+}

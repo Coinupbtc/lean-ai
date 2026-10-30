@@ -105,6 +105,12 @@ Measured read-only on the profile's `state.db`: prompt = Hermes-reported input +
 main agent only, sessions grouped by start time. Stubs are counted from the rewritten rows (the original size is
 kept in each stub).
 
+## The second walk: the GPU clock
+
+The same method, one layer down. A six-level clock-cap sweep on the two Sparks found that the top ~200 MHz of GPU clock
+costs 28% of GPU-rail power for 1.4% of prefill and no decode. 2300 MHz has been live on both nodes since Oct 29. It
+cut average heat but not the thermal peaks it was meant to fix. [Write-up, chart and data](docs/clock-cap.md)
+
 ## Run it on your own Hermes
 
 Python 3.10+, no dependencies. `tokenizers` is optional, for exact counts.
@@ -151,5 +157,6 @@ python3 -m unittest discover -s tests   # 11 tests on a synthetic state.db with 
 | `report_template.html` | The self-contained HTML report. |
 | `examples/` | My real reports: whole house by month and all time, and orch for Oct 20–28. |
 | `docs/METHOD.md` | Every metric, its formula and why it's built that way. |
+| `docs/clock-cap.md` | The GPU clock-cap sweep, soak and data (`examples/clock-2026-10-29/`). |
 
 MIT licensed.
